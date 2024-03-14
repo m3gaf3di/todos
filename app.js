@@ -22,16 +22,15 @@ app.post('/todos', (req, res) => {
     todos.push(newTodo);
     res.json(newTodo);
 });
-app.put('/todos', (req, res) => {
+app.put('/todos/:id', (req, res) => {
     const id = req.params.id;
     const { title, description } = req.body;
-    const todo = todos.find((todo) => todo.id === id);
-    if (todo) {
-        todo.title = title;
-        todo.description = description;
-        res.json(todo);
-    } else {
-        res.status(404).json({ message: 'Todo not found' });
+    const todo = todos.find(todo => todo.id === id);
+    if (!todo) {
+        return res.status(404).send('The todo with the given ID was not found.');
     }
+    todo.title = title;
+    todo.description = description;
+    res.json(todo);
 });
 
